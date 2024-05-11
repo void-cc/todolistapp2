@@ -52,6 +52,10 @@ def update_todo_list_socketio():
         i += 1
     socketio.emit('refreshTodoList', todo_info_dict)
 
+
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
     if 'todo' not in session:
@@ -164,6 +168,11 @@ def login_page():
                 melding = 'Username or password is incorrect'
     return render_template('login.html', melding=melding, username=username)
 
+
+@app.route('/agenda', methods=['GET', 'POST'])
+def agenda_page():
+
+    return render_template('agenda.html')
 
 if __name__ == '__main__':
     ##startup session

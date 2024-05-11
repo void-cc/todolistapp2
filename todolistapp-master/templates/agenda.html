@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .grid-agenda {
+            display: grid;
+            grid-template-columns: 80% 20%;
+        }
+
+        .agenda-block-1-hour {
+            width: 20%;
+            height: 100px;
+            background-color: #f0f0f0;
+            border: 1px solid #000;
+        }
+        .agenda-block-1-hour-time {
+            width: 100%;
+            height: 20%;
+            background-color: #7ad2d2;
+            border-bottom: 1px solid #000;
+        }
+        .agenda-block-1-hour-event {
+            width: 100%;
+            height: 80%;
+            background-color: #dafeff;
+            cursor: move;
+        }
+        .agenda-block-1-hour-event.over {
+            background-color: #7ad2d2;
+        }
+
+
+        .empty-agenda-block-1-hour {
+            width: 20%;
+            height: 100px;
+            background-color: #f0f0f0;
+            border: 1px solid #000;
+        }
+        .agenda-lines {
+            margin-top: 33.3px;
+
+        }
+
+        .agenda {
+            display: grid;
+            grid-template-rows: 20% 20% 20% 20% 20%;
+
+        }
+        .todo-items {
+            display: grid;
+            grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+        }
+
+        .todo-item {
+            width: 100%;
+            height: 50px;
+            background-color: #f0f0f0;
+            border: 1px solid #000;
+            cursor: move;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="grid-agenda">
+
+<div class="agenda">
+    <div class="empty-agenda-block-1-hour">
+        <hr class="agenda-lines">
+        <hr class="agenda-lines">
+    </div>
+    <div draggable="true" class="agenda-block-1-hour tranferable">
+        <div class="agenda-block-1-hour-time">10:00</div>
+        <div class="agenda-block-1-hour-event">Event 1</div>
+    </div>
+    <div draggable="true" class="agenda-block-1-hour tranferable">
+        <div class="agenda-block-1-hour-time">11:00</div>
+        <div class="agenda-block-1-hour-event">Event 2</div>
+    </div>
+    <div draggable="true" class="agenda-block-1-hour tranferable">
+        <div class="agenda-block-1-hour-time">12:00</div>
+        <div class="agenda-block-1-hour-event">Event 3</div>
+    </div>
+    <div class="empty-agenda-block-1-hour">
+        <hr class="agenda-lines">
+        <hr class="agenda-lines">
+    </div>
+</div>
+    <div class="todo-items">
+        <div draggable="true" class="todo-item tranferable">
+            <div class="todo-item-title">Event 1</div>
+            <div class="todo-item-description">Description 1</div>
+        </div>
+        <div draggable="true" class="todo-item tranferable">
+            <div class="todo-item-title">Event 2</div>
+            <div class="todo-item-description">Description 2</div>
+        </div>
+        <div draggable="true" class="todo-item tranferable">
+            <div class="todo-item-title">Event 3</div>
+            <div class="todo-item-description">Description 3</div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        function handleDragStart(e) {
+            this.style.opacity = '0.4';
+
+            dragSrcEl = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+        }
+
+        function handleDragEnd(e) {
+            this.style.opacity = '1';
+
+            items.forEach(function (item) {
+                item.classList.remove('over');
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            this.classList.add('over');
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('over');
+        }
+
+        function handleDrop(e) {
+            e.stopPropagation();
+            if (dragSrcEl != this) {
+                dragSrcEl.innerHTML = this.innerHTML;
+                this.innerHTML = e.dataTransfer.getData('text/html');
+            }
+            return false;
+        }
+
+        let items = document.querySelectorAll('.tranferable');
+        items.forEach(function(item) {
+            item.addEventListener('dragstart', handleDragStart);
+            item.addEventListener('dragover', handleDragOver);
+            item.addEventListener('dragenter', handleDragEnter);
+            item.addEventListener('dragleave', handleDragLeave);
+
+            item.addEventListener('dragend', handleDragEnd);
+            item.addEventListener('drop', handleDrop);
+        });
+        });
+</script>
+</body>
+</html>
