@@ -32,7 +32,7 @@ def background_thread():
             todo_info_dict[i] = todo
             i += 1
         socketio.emit('refreshTodoList', todo_info_dict)
-        socketio.sleep(30)
+        socketio.sleep(300)
 
 
 def remove_todo_socketio(todo_id):
@@ -100,8 +100,7 @@ def connect():
     global thread
     print('Client connected')
 
-    with thread_lock:
-        thread = socketio.start_background_task(background_thread)
+
 
 
 @socketio.on('disconnect')
@@ -112,14 +111,12 @@ def disconnect():
 @app.route('/submit', methods=['POST'])
 def submit_todo():
     user_id = 1
-    print(request.form)
     if request.method == 'POST':
         ## Toevoegen van een nieuwe todo-item
         if 'toevoegen' in request.form:
             ti.add_to_todo(request.form['toevoegen'], user_id,
                            datetime.fromisoformat(
                                request.form['toevoegen_date']))
-            update_todo_list_socketio()
 
             # verwijderen van een todo-item
         elif 'todo_delete' in request.form:
@@ -129,23 +126,25 @@ def submit_todo():
             # Todo-naar done maken
         elif 'todo_done' in request.form:
             ti.change_todo_to_done(request.form['todo_done'], True)
-            update_todo_list_socketio()
 
             # Todo terug naar todo maken
         elif 'todo_done_back' in request.form:
             ti.change_todo_to_done(request.form['todo_done_back'], False)
-            update_todo_list_socketio()
 
-
-        elif 'todo-change-date' in request.form:
-            ti.change_todo_date(request.form['todo-date'],
+        if 'todo_edit_date' in request.form:
+            ti.change_todo_date(request.form['todo_id'],
                                 datetime.fromisoformat(
-                                    request.form['todo-date-date']
+                                    request.form['todo_edit_date']
                                                         )
                                 )
-            update_todo_list_socketio()
 
-    return 'succes'
+        if 'todo_edit_text' in request.form:
+            ti.change_todo_text(request.form['todo_id'],
+                                request.form['todo_edit_text']
+                                )
+    update_todo_list_socketio()
+
+    return 'succes: ' + str(request.form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
@@ -168,4 +167,4 @@ def login_page():
 
 if __name__ == '__main__':
     ##startup session
-    socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True, debug=True)
+    socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True, debug=True, port=80)

@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://kit.fontawesome.com/15ba92b5cd.js" crossorigin="anonymous"></script>
     <title>To Do</title>
     <style>
         body {
@@ -47,6 +48,11 @@
 
         }
 
+        .todo-date-due {
+            display: inline;
+            justify-content: right;
+        }
+
         .soft-border {
             border-style: solid;
             border-color: lightgray;
@@ -58,6 +64,20 @@
             margin: 6px;
             justify-content: left;
         }
+
+        .todo-edit {
+            position: absolute;
+            margin-top: 3px;
+            right: 80px;
+            background-color: transparent;
+            border: none;
+            color: grey;
+        }
+
+        .todo-edit:hover {
+            color: blue;
+        }
+
         .todo-delete {
             position: absolute;
             right: 60px;
@@ -109,6 +129,49 @@
         .text-red {
             color: red;
         }
+
+        .datepicker-toggle {
+  display: inline-block;
+  position: relative;
+  width: 18px;
+  height: 19px;
+}
+.datepicker-toggle-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.todo-toevoegen-right {
+    display: inline;
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+
+.datepicker-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.datepicker-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
     </style>
 </head>
 <body>
@@ -123,8 +186,14 @@
     <div class="add-todo">
         <form id="add-todo-form">
             <input type="text" id="toevoegen-todo" name="toevoegen" placeholder="pyweb maken">
-            <input type="date" id="toevoegen-todo-date" name="toevoegen-date">
-            <input id='toevoegeb-todo-button' type="submit" value="OK">
+            <div class="todo-toevoegen-right">
+            <span class="datepicker-toggle">
+                <span class="fa-regular fa-calendar-days"></span>
+                <input type="datetime-local" id="toevoegen-todo-date" class="datepicker-input" name="toevoegen-date">
+            </span>
+
+            <input id='toevoegen-todo-button' type="submit" value="OK">
+                </div>
         </form>
     </div>
     <div id="todo-list">
@@ -232,6 +301,39 @@
         });
     });
 
+    $('#todo-list').on('click', 'button[name="todo-edit"]', function (e) {
+        e.preventDefault();
+        let todo_id = $(this).val();
+        console.log(todo_id);
+        let todo_text = $('#todo-id-' + todo_id + ' .todo-text').text();
+        let todo_date = $('#todo-id-' + todo_id + ' .todo-date-due').text();
+        console.log(todo_text);
+        $('#todo-id-' + todo_id + ' .todo-text').replaceWith('<input type="text" id="edit-todo-' + todo_id + '" value="' + todo_text + '">');
+        $('#todo-id-' + todo_id + ' .todo-date-due').replaceWith('<input type="datetime-local" id="edit-todo-date-' + todo_id + '" value="' + todo_date + '">');
+        $('#todo-id-' + todo_id + ' .todo-edit').replaceWith('<button type="submit" class="todo-edit-save" name="todo-edit-save" value="' + todo_id + '">Save</button>');
+    });
+
+    $('#todo-list').on('click', 'button[name="todo-edit-save"]', function (e) {
+        e.preventDefault();
+        let todo_id = $(this).val();
+        console.log(todo_id);
+        let todo_text = $('#edit-todo-' + todo_id).val();
+        console.log(todo_text);
+        let todo_date = $('#edit-todo-date-' + todo_id).val();
+        $.ajax({
+            type: 'POST',
+            url: '/submit',
+            data: {
+                todo_id: todo_id,
+                todo_edit_text: todo_text,
+                todo_edit_date: todo_date
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
 
 
 
@@ -268,10 +370,10 @@
                 todo_list = "#todo-list-undone";
             }
             if (todo[i].todo_date_overdue){
-                todo_date = '<p class="todo-text text-red">' + todo[i].todo_date + '</p>';
+                todo_date = '<p class="todo-date-due text-red">' + todo[i].todo_date + '</p>';
             }
             else {
-                todo_date = '<p class="todo-text">' + todo[i].todo_date + '</p>';
+                todo_date = '<p class="todo-date-due">' + todo[i].todo_date + '</p>';
             }
 
             let todo_item = '<div id="todo-id-'+ todo[i].id + '" class="todo-item soft-border">' +
@@ -279,6 +381,7 @@
                 '</button><p class="todo-text"> ' + todo[i].todo_text + ' ' +
                 '</p>' +
                 todo_date +
+                '<button type="submit" class="todo-edit fa-solid fa-pen" name="todo-edit" value="' + todo[i].id + '"' + '</button>' +
                 '<button type="submit" class="todo-delete fa fa-trash-o" name="todo-delete" value="' + todo[i].id + '">' +
                 '</button></div>';
             $(todo_list).append(todo_item);
