@@ -168,4 +168,4 @@ def login_page():
 
 if __name__ == '__main__':
     ##startup session
-    socketio.run(host="0.0.0.0", app, allow_unsafe_werkzeug=True, debug=True)
+    socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True, debug=True)
