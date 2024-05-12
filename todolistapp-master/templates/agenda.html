@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/15ba92b5cd.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='agenda.css') }}">
-
+    <script src="{{ url_for('static', filename='js/agenda.js') }}"></script>
     <title>Title</title>
     <style>
 
@@ -55,56 +55,7 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        function handleDragStart(e) {
-            this.style.opacity = '0.4';
 
-            dragSrcEl = this;
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', this.innerHTML);
-        }
-
-        function handleDragEnd(e) {
-            this.style.opacity = '1';
-
-            items.forEach(function (item) {
-                item.classList.remove('over');
-            });
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            return false;
-        }
-
-        function handleDragEnter(e) {
-            this.classList.add('over');
-        }
-
-        function handleDragLeave(e) {
-            this.classList.remove('over');
-        }
-
-        function handleDrop(e) {
-            e.stopPropagation();
-            if (dragSrcEl != this) {
-                dragSrcEl.innerHTML = this.innerHTML;
-                this.innerHTML = e.dataTransfer.getData('text/html');
-            }
-            return false;
-        }
-
-        let items = document.querySelectorAll('.tranferable');
-        items.forEach(function(item) {
-            item.addEventListener('dragstart', handleDragStart);
-            item.addEventListener('dragover', handleDragOver);
-            item.addEventListener('dragenter', handleDragEnter);
-            item.addEventListener('dragleave', handleDragLeave);
-
-            item.addEventListener('dragend', handleDragEnd);
-            item.addEventListener('drop', handleDrop);
-        });
-        });
 </script>
 </body>
 </html>
