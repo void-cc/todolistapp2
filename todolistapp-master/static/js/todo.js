@@ -7,6 +7,9 @@
         let todo_date = $('#toevoegen-todo-date').val();
         console.log(todo_text);
         console.log(todo_date);
+        if (todo_date === ''){
+            todo_date = '0001-01-01T00:00';
+        }
         $.ajax({
             type: 'POST',
             url: '/submit',

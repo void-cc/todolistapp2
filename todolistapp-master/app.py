@@ -106,7 +106,7 @@ def homepage():
 
     return render_template('index.html',
                            todolist=session['todo'],
-                           todolistdone=session['todo-done'])
+                           todolistdone=session['todo-done'], todo_time=datetime.now())
 
 
 @socketio.on('connect')
@@ -153,7 +153,8 @@ def submit_todo():
         if 'todo_edit_text' in request.form:
             ti.change_todo_text(request.form['todo_id'],
                                 request.form['todo_edit_text']
-                                )
+                               )
+    update_todo_list_socketio_agenda()
     update_todo_list_socketio()
 
     return 'succes: ' + str(request.form)
