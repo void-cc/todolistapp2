@@ -53,6 +53,18 @@ def update_todo_list_socketio():
     socketio.emit('refreshTodoList', todo_info_dict)
 
 
+def update_todo_list_socketio_agenda():
+    user_id = 1
+    todo_info_dict = {}
+    todo_info = ti.get_todo_function(user_id)
+    i = 0
+    for todo in todo_info:
+        # convert datetime to string
+        todo['todo_made_time'] = todo['todo_made_time'].strftime('%Y-%m-%d %H:%M:%S')
+        todo['todo_date'] = todo['todo_date'].strftime('%Y-%m-%d %H:%M:%S')
+        todo_info_dict[i] = todo
+        i += 1
+    socketio.emit('refreshTodoAgenda', todo_info_dict)
 
 
 

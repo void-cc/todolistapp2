@@ -1,0 +1,56 @@
+.grid-agenda {
+            display: grid;
+            grid-template-columns: 80% 20%;
+        }
+
+        .agenda-block-1-hour {
+            width: 20%;
+            height: 100px;
+            background-color: #f0f0f0;
+            border: 1px solid #000;
+        }
+        .agenda-block-1-hour-time {
+            width: 100%;
+            height: 20%;
+            background-color: #7ad2d2;
+            border-bottom: 1px solid #000;
+        }
+        .agenda-block-1-hour-event {
+            width: 100%;
+            height: 80%;
+            background-color: #dafeff;
+            cursor: move;
+        }
+        .agenda-block-1-hour-event.over {
+            background-color: #7ad2d2;
+        }
+
+
+        .empty-agenda-block-1-hour {
+            width: 20%;
+            height: 100px;
+            background-color: #f0f0f0;
+            border: 1px solid #000;
+        }
+        .agenda-lines {
+            margin-top: 33.3px;
+
+        }
+
+        .agenda {
+            display: grid;
+            grid-template-rows: 20% 20% 20% 20% 20%;
+
+        }
+        .todo-items {
+            display: grid;
+            grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+        }
+
+        .todo-item {
+            width: 100%;
+            height: 50px;
+            background-color: #f0f0f0;
+            border: 1px solid #000;
+            cursor: move;
+        }
