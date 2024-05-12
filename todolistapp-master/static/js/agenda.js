@@ -1,6 +1,19 @@
-document.addEventListener('DOMContentLoaded', function() {
-        update();
+window.onload = function() {
+
+        //e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/updateagenda',
+            data: {
+                nothing: 'page_load/refresh'
+            },
+            success: function (data) {
+                console.log(data);
+            }
         });
+        update();
+    }
+
 function handleDragStart(e) {
             this.style.opacity = '0.4';
 
@@ -82,8 +95,10 @@ $(document).ready(function() {
                 $('#todo-agenda-item-' + todoItems[i].id).remove();
             }
             let todoItemHtml = '<div class="todo-item tranferable" id="todo-agenda-item-' + todoItems[i].id + '" draggable="true">' +
+                '<div class="agenda-todo-wrapper">' +
                 '<div class="todo-item-title">' + todoItems[i].todo_date + '</div>' +
                 '<div class="todo-item-description">' + todoItems[i].todo_text + '</div>' +
+                '</div>' +
                 '</div>';
             $('.todo-items').append(todoItemHtml);
         }

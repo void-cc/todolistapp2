@@ -1,26 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta charset="UTF-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/15ba92b5cd.js" crossorigin="anonymous"></script>
-    <title>To Do</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='js/todo.js') }}"></script>
-    <style>
+{% extends 'basis.html' %}
 
-    </style>
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="/">Todo</a></li>
-            <li><a href="{{ url_for('agenda_page') }}">agenda</a></li>
-            <li style="float: right"><a href="/account">account</a></li>
-        </ul>
-    </nav>
+{% block title %}Todo{% endblock %}
+{% block custom_imports_header %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='todo.css') }}">
+    <script src="{{ url_for('static', filename='js/todo.js') }}"></script>
+{% endblock %}
+
+{% block content %}
     <h1>To Do</h1>
     <div class="add-todo">
         <form id="add-todo-form">
@@ -66,8 +52,6 @@
     {% endfor %}
     </form>
     </div>
-<script>
+{% endblock %}
 
-</script>
-</body>
-</html>
+

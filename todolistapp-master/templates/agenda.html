@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta charset="UTF-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/15ba92b5cd.js" crossorigin="anonymous"></script>
+{% extends 'basis.html' %}
+
+{% block title %}Agenda{% endblock %}
+
+{% block custom_imports_header %}
     <link rel="stylesheet" href="{{ url_for('static', filename='agenda.css') }}">
     <script src="{{ url_for('static', filename='js/agenda.js') }}"></script>
-    <title>Title</title>
-    <style>
+{% endblock %}
 
-
-    </style>
-</head>
-<body>
+{% block content %}
 <div class="grid-agenda">
 
 <div class="agenda">
@@ -40,6 +33,7 @@
     </div>
 </div>
     <div class="todo-items">
+        <!--
         <button id="todo-agenda-update" class="button">update</button>
         <div id="todo-agenda-item-1" draggable="true" class="todo-item tranferable">
             <div class="todo-item-title">Event 1</div>
@@ -52,11 +46,8 @@
         <div id="todo-agenda-item-2" draggable="true" class="todo-item tranferable">
             <div class="todo-item-title">Event 3</div>
             <div class="todo-item-description">Description 3</div>
-        </div>
+        </div> -->
     </div>
 </div>
-<script>
+{% endblock %}
 
-</script>
-</body>
-</html>
