@@ -48,3 +48,34 @@ document.addEventListener('DOMContentLoaded', function() {
             item.addEventListener('drop', handleDrop);
         });
         });
+$(document).ready(function() {
+    let socket = io.connect();
+    socket.on('refreshTodoAgenda', function(data) {
+        console.log('refreshTodoAgenda');
+        const jsonString = JSON.stringify(data);
+        let todoItems = JSON.parse(jsonString);
+        for(let i = 0; i < Object.keys(todoItems).length; i++) {
+            if($('#todo-agenda-item-' + todoItems[i].id).length) {
+                $('#todo-agenda-item-' + todoItems[i].id).remove();
+            }
+            let todoItemHtml = '<div class="todo-item tranferable" id="todo-agenda-item-' + todoItems[i].id + '" draggable="true">' +
+                '<div class="todo-text">' + todoItems[i].todo_date + '</div>' +
+                '<div class="todo-item-description">' + todoItems[i].todo_text + '</div>' +
+                '</div>';
+            $('.todo-items').append(todoItemHtml);
+        }
+    });
+    $('#todo-agenda-update').on('click', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/updateagenda',
+            data: {
+                nothing: 'nothing'
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    });
+});

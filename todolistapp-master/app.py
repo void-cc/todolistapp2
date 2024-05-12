@@ -186,6 +186,12 @@ def agenda_page():
 
     return render_template('agenda.html')
 
+
+@app.route('/updateagenda', methods=['POST'])
+def update_agenda():
+    update_todo_list_socketio_agenda()
+    return 'succes update agenda: ' + str(request.form)
+
 if __name__ == '__main__':
     ##startup session
     socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True, debug=True, port=80)
