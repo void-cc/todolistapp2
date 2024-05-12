@@ -8,7 +8,6 @@ from flask_socketio import SocketIO
 from threading import Lock
 
 
-
 # Background Thread
 thread = None
 thread_lock = Lock()
@@ -67,7 +66,6 @@ def update_todo_list_socketio_agenda():
     socketio.emit('refreshTodoAgenda', todo_info_dict)
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
     if 'todo' not in session:
@@ -117,8 +115,6 @@ def connect():
     print('Client connected')
 
 
-
-
 @socketio.on('disconnect')
 def disconnect():
     print('Client disconnected', request.sid)
@@ -162,6 +158,7 @@ def submit_todo():
 
     return 'succes: ' + str(request.form)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     melding = ''
@@ -191,6 +188,7 @@ def agenda_page():
 def update_agenda():
     update_todo_list_socketio_agenda()
     return 'succes update agenda: ' + str(request.form)
+
 
 if __name__ == '__main__':
     ##startup session

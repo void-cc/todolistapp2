@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-        function handleDragStart(e) {
+        update();
+        });
+
+function update() {
+    function handleDragStart(e) {
             this.style.opacity = '0.4';
 
             dragSrcEl = this;
@@ -47,7 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
             item.addEventListener('dragend', handleDragEnd);
             item.addEventListener('drop', handleDrop);
         });
-        });
+}
+
 $(document).ready(function() {
     let socket = io.connect();
     socket.on('refreshTodoAgenda', function(data) {
@@ -59,11 +64,12 @@ $(document).ready(function() {
                 $('#todo-agenda-item-' + todoItems[i].id).remove();
             }
             let todoItemHtml = '<div class="todo-item tranferable" id="todo-agenda-item-' + todoItems[i].id + '" draggable="true">' +
-                '<div class="todo-text">' + todoItems[i].todo_date + '</div>' +
+                '<div class="todo-item-title">' + todoItems[i].todo_date + '</div>' +
                 '<div class="todo-item-description">' + todoItems[i].todo_text + '</div>' +
                 '</div>';
             $('.todo-items').append(todoItemHtml);
         }
+        update();
     });
     $('#todo-agenda-update').on('click', function (e) {
         e.preventDefault();
