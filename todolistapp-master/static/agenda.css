@@ -54,3 +54,7 @@
             border: 1px solid #000;
             cursor: move;
         }
+
+        .todo-item.over {
+            background-color: #d27a7a;
+        }

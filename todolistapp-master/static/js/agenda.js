@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
         update();
         });
-
-function update() {
-    function handleDragStart(e) {
+function handleDragStart(e) {
             this.style.opacity = '0.4';
 
             dragSrcEl = this;
@@ -13,6 +11,7 @@ function update() {
 
         function handleDragEnd(e) {
             this.style.opacity = '1';
+            let items = document.querySelectorAll('.tranferable');
 
             items.forEach(function (item) {
                 item.classList.remove('over');
@@ -41,7 +40,20 @@ function update() {
             return false;
         }
 
+function update() {
         let items = document.querySelectorAll('.tranferable');
+            items.forEach(function(item) {
+                item.removeEventListener('dragstart', handleDragStart);
+                item.removeEventListener('dragover', handleDragOver);
+                item.removeEventListener('dragenter', handleDragEnter);
+                item.removeEventListener('dragleave', handleDragLeave);
+
+                item.removeEventListener('dragend', handleDragEnd);
+                item.removeEventListener('drop', handleDrop);
+            });
+
+
+        //let items = document.querySelectorAll('.tranferable');
         items.forEach(function(item) {
             item.addEventListener('dragstart', handleDragStart);
             item.addEventListener('dragover', handleDragOver);
@@ -52,6 +64,12 @@ function update() {
             item.addEventListener('drop', handleDrop);
         });
 }
+
+// re aplying the drag and drop functionality after refreshTodoAgenda
+
+//deleting old functionality
+
+
 
 $(document).ready(function() {
     let socket = io.connect();
