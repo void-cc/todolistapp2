@@ -7,11 +7,15 @@
 {% endblock %}
 
 {% block content %}
-    <h1>To Do</h1>
+    <h1>To Do</h1><i class="fa-regular fa-plane"></i>
     <div class="add-todo">
         <form id="add-todo-form">
             <input type="text" id="toevoegen-todo" name="toevoegen" placeholder="pyweb maken">
             <div class="todo-toevoegen-right">
+                <div class="tags">
+                    <input type="text" id="toevoegen-todo-tags" name="toevoegen-tags" placeholder="tags">
+                    <input type="color" id="toevoegen-todo-tags-color" name="toevoegen-color" value="#ff0000">
+                </div>
             <span class="datepicker-toggle">
                 <span class="fa-regular fa-calendar-days"></span>
                 <input type="datetime-local" id="toevoegen-todo-date" class="datepicker-input" name="toevoegen-date" value="{{ todo_time }}">
@@ -24,7 +28,7 @@
     <div id="todo-list">
     <form id='todo-list-undone'>
     {% for todo in todolist %}
-        <div id='todo-id-{{ todo.id }}'class="todo-item soft-border">
+        <div id='todo-id-{{ todo.id }}' class="todo-item soft-border">
             <button type="submit" id='todo-done-{{ todo.id }}' class="todo-done" name="{% if todo.todo_done %}todo-done-back{% else %}todo-done{% endif %}" value="{{ todo.id }}"></button>
             {% if todo.todo_done %}
                 <s><p class="todo-text">{{ todo.todo_text }}</p></s>
@@ -36,6 +40,7 @@
             {% else %}
             <p class="todo-text">{{ todo.todo_date }}</p>
             {% endif %}
+            <div class="tag" style="background-color:{{ todo.todo_tags[1] }}"><p class="todo-text">{{ todo.todo_tags[0] }}</p></div>
             <button type="submit" class="todo-delete fa fa-trash-o" name="todo-delete" value="{{ todo.id }}"></button>
         </div>
 

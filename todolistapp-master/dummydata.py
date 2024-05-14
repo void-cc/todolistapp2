@@ -30,10 +30,12 @@ with Session(engine) as session:
     new_todo = dbm.TodoList(
         todo_text="This is a new todo",
         todo_made_time=datetime.now(),
+        todo_description="This is a description",
         todo_date=datetime(2024, 5, 10),
         todo_date_overdue=False,
         todo_done=False,
         user_id=chloe.id,
+        todo_tags=[dbm.Tags(tag_name="test", tag_color="red")]
     )
 
     session.add(new_todo)

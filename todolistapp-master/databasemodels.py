@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List
 from typing import Optional
 from sqlalchemy import ForeignKey
@@ -36,7 +35,9 @@ class User(Base):
                               self.password_hash)
 
     def __repr__(self) -> str:
-        return f"User(id={self.id!r}, name={self.name!r}, fullname={self.fullname!r}"
+        return (f"User(id={self.id!r}, name={self.name!r}, "
+                f"fullname={self.fullname!r}")
+
 
 class Address(Base):
     __tablename__ = "address"
@@ -56,10 +57,12 @@ class TodoList(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     todo_text: Mapped[str] = mapped_column(String(1000))
+    todo_description = mapped_column(Text, nullable=True)
     todo_made_time = mapped_column(DateTime)
     todo_date = mapped_column(DateTime)
     todo_date_overdue = mapped_column(Boolean)
     todo_done = mapped_column(Boolean)
+    todo_tags: Mapped[List["Tags"]] = relationship("Tags", back_populates="todolist", cascade="all, delete-orphan")
 
     user_id = mapped_column(Integer)
 
@@ -71,3 +74,16 @@ class TodoList(Base):
                 f"todo_date={self.todo_date},"
                 f"todo_date_overdue={self.todo_date_overdue},"
                 f"todo_done={self.todo_done})")
+
+
+class Tags(Base):
+    __tablename__ = "tags"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    tag_name: Mapped[str] = mapped_column(String(100))
+    tag_color = mapped_column(String(100))
+    todolist_id = mapped_column(Integer, ForeignKey('todolist.id'))
+    todolist: Mapped[TodoList] = relationship("TodoList", back_populates="todo_tags")
+
+    def __repr__(self):
+        return f"Tags(id={self.id!r}, tag_name={self.tag_name!r})"
