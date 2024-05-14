@@ -140,4 +140,6 @@
 
 .tag {
     border-radius: 25px;
+    width: 40px;
+    display: inline;
 }

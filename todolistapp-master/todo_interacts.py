@@ -31,8 +31,8 @@ def add_to_todo(todo_text,
                 todo_description=None,
                 todo_date_overdue=False,
                 todo_done=False,
-                todo_tags='test',
-                todo_tags_color='green'
+                todo_tags=None,
+                todo_tags_color=None
                 ):
     if todo_date == datetime.fromisoformat('0001-01-01'):
         todo_date_overdue = False
@@ -47,7 +47,6 @@ def add_to_todo(todo_text,
         todo_date_overdue=todo_date_overdue,
         todo_done=todo_done,
         user_id=user_id,
-        # get the first tag information from tags with the same todolist_id
         todo_tags=[Tags(tag_name=todo_tags, tag_color=todo_tags_color)]
     )
     sdb.add(new_todo)

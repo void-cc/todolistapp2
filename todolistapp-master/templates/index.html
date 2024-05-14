@@ -40,7 +40,7 @@
             {% else %}
             <p class="todo-text">{{ todo.todo_date }}</p>
             {% endif %}
-            <div class="tag" style="background-color:{{ todo.todo_tags[1] }}"><p class="todo-text">{{ todo.todo_tags }}</p></div>
+            <div class="tag" style="background-color:{{ todo.todo_tags[1] }}"><p class="todo-text">{{ todo.todo_tags[0] }}</p></div>
             <button type="submit" class="todo-delete fa fa-trash-o" name="todo-delete" value="{{ todo.id }}"></button>
         </div>
 

@@ -80,7 +80,7 @@ def homepage():
             ti.add_to_todo(request.form['toevoegen'], user_id,
                            datetime.fromisoformat(
                                request.form['toevoegen_date']),
-                           todo_tags= 'test', #request.form['toevoegen_tag'],
+                           todo_tags=request.form['toevoegen_tag'],
                            todo_tags_color=request.form['toevoegen_tag_color'])
 
         # verwijderen van een todo-item
@@ -130,7 +130,9 @@ def submit_todo():
         if 'toevoegen' in request.form:
             ti.add_to_todo(request.form['toevoegen'], user_id,
                            datetime.fromisoformat(
-                               request.form['toevoegen_date']))
+                               request.form['toevoegen_date']),
+                           todo_tags=request.form['toevoegen_tag'],
+                           todo_tags_color=request.form['toevoegen_tag_color'])
 
             # verwijderen van een todo-item
         elif 'todo_delete' in request.form:

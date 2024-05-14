@@ -159,6 +159,7 @@
                 '</button><p class="todo-text"> ' + todo[i].todo_text + ' ' +
                 '</p>' +
                 todo_date +
+                '<div class="tag" style="background-color:' + todo[i].todo_tags[1] + '"><p class="todo-text">' + todo[i].todo_tags[0] + '</p></div>\n' +
                 '<button type="submit" class="todo-edit fa-solid fa-pen" name="todo-edit" value="' + todo[i].id + '"' + '</button>' +
                 '<button type="submit" class="todo-delete fa fa-trash-o" name="todo-delete" value="' + todo[i].id + '">' +
                 '</button></div>';
