@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, session
 from createengine import sessiondatabase as sdb
 from sqlalchemy import select
-from databasemodels import User
+from databasemodels import User, TodoList
 import todo_interacts as ti
 from flask_socketio import SocketIO
 from threading import Lock
@@ -79,7 +79,9 @@ def homepage():
         if 'toevoegen' in request.form:
             ti.add_to_todo(request.form['toevoegen'], user_id,
                            datetime.fromisoformat(
-                               request.form['toevoegen_date']))
+                               request.form['toevoegen_date']),
+                           todo_tags= 'test', #request.form['toevoegen_tag'],
+                           todo_tags_color=request.form['toevoegen_tag_color'])
 
         # verwijderen van een todo-item
         elif 'todo_delete' in request.form:

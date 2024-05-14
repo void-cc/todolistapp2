@@ -1,4 +1,4 @@
-from databasemodels import TodoList
+from databasemodels import TodoList, Tags
 from sqlalchemy import select
 from createengine import sessiondatabase as sdb
 from datetime import datetime
@@ -11,10 +11,13 @@ def get_todo_function(user_id: int):
     for user_obj in result.scalars():
         todolist.append(
             {'todo_text': user_obj.todo_text,
+             'todo_description': user_obj.todo_description,
              'todo_made_time': user_obj.todo_made_time,
              'todo_date': user_obj.todo_date,
              'todo_date_overdue': user_obj.todo_date_overdue,
              'todo_done': user_obj.todo_done,
+             # get the first tag information from tags with the same todolist_id
+                'todo_tags': [user_obj.todo_tags[0].tag_name, user_obj.todo_tags[0].tag_color],
              'user_id': user_obj.user_id,
              'id': user_obj.id
              }
@@ -25,8 +28,11 @@ def get_todo_function(user_id: int):
 def add_to_todo(todo_text,
                 user_id,
                 todo_date=datetime.fromisoformat('0001-01-01'),
+                todo_description=None,
                 todo_date_overdue=False,
                 todo_done=False,
+                todo_tags='test',
+                todo_tags_color='green'
                 ):
     if todo_date == datetime.fromisoformat('0001-01-01'):
         todo_date_overdue = False
@@ -35,11 +41,14 @@ def add_to_todo(todo_text,
 
     new_todo = TodoList(
         todo_text=todo_text,
+        todo_description=todo_description,
         todo_made_time=datetime.now(),
         todo_date=todo_date,
         todo_date_overdue=todo_date_overdue,
         todo_done=todo_done,
-        user_id=user_id
+        user_id=user_id,
+        # get the first tag information from tags with the same todolist_id
+        todo_tags=[Tags(tag_name=todo_tags, tag_color=todo_tags_color)]
     )
     sdb.add(new_todo)
     sdb.commit()

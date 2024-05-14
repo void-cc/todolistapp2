@@ -5,6 +5,8 @@
         e.preventDefault();
         let todo_text = $('#toevoegen-todo').val();
         let todo_date = $('#toevoegen-todo-date').val();
+        let todo_tag = $('#toevoegen-todo-tags').val();
+        let todo_tag_color = $('#toevoegen-todo-tags-color').val();
         console.log(todo_text);
         console.log(todo_date);
         if (todo_date === ''){
@@ -15,7 +17,10 @@
             url: '/submit',
             data: {
                 toevoegen: todo_text,
-                toevoegen_date: todo_date
+                toevoegen_date: todo_date,
+                toevoegen_description: 'test description',
+                toevoegen_tag: todo_tag,
+                toevoegen_tag_color: todo_tag_color
             },
             success: function (data) {
                 console.log(data);
