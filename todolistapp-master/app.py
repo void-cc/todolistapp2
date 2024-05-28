@@ -6,6 +6,9 @@ from databasemodels import User
 import todo_interacts as ti
 from flask_socketio import SocketIO
 from threading import Lock
+import redis
+from rq import Queue
+
 
 
 # Background Thread
@@ -15,6 +18,9 @@ thread_lock = Lock()
 app = Flask(__name__)
 app.secret_key = b'dwhbd'
 socketio = SocketIO(app, cors_allowed_origins='*')
+
+r = redis.Redis()
+q = Queue(connection=r)
 
 
 def background_thread():
@@ -37,7 +43,7 @@ def background_thread():
 def remove_todo_socketio(todo_id):
     socketio.emit('removeTodo', todo_id)
 
-
+"""
 def update_todo_list_socketio():
     user_id = 1
     todo_info_dict = {}
@@ -50,7 +56,19 @@ def update_todo_list_socketio():
         todo_info_dict[i] = todo
         i += 1
     socketio.emit('refreshTodoList', todo_info_dict)
+"""
 
+def update_todo_list_sockerio(todo_info):
+    todo_info_dict = {}
+    i = 0
+    for todo in todo_info:
+        # convert datetime to string
+        todo['todo_made_time'] = todo['todo_made_time'].strftime(
+            '%Y-%m-%d %H:%M:%S')
+        todo['todo_date'] = todo['todo_date'].strftime('%Y-%m-%d %H:%M:%S')
+        todo_info_dict[i] = todo
+        i += 1
+    socketio.emit('refreshTodoList', todo_info_dict)
 
 def update_todo_list_socketio_agenda():
     user_id = 1
@@ -65,6 +83,10 @@ def update_todo_list_socketio_agenda():
         i += 1
     socketio.emit('refreshTodoAgenda', todo_info_dict)
 
+
+
+def error_message():
+    socketio.emit('errorMessage', 'HOOOOO rustig aan een beetje!')
 
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
@@ -123,12 +145,32 @@ def disconnect():
 @app.route('/submit', methods=['POST'])
 def submit_todo():
     user_id = 1
+    message = ''
     if request.method == 'POST':
         ## Toevoegen van een nieuwe todo-item
         if 'toevoegen' in request.form:
-            ti.add_to_todo(request.form['toevoegen'], user_id,
-                           datetime.fromisoformat(
-                               request.form['toevoegen_date']))
+            job = q.enqueue(ti.add_to_todo, request.form['toevoegen'], user_id, datetime.fromisoformat(request.form['toevoegen_date']))
+            print(job.get_id())
+            if len(q) > 1:
+                print('There are {} jobs in the queue'.format(len(q)))
+                q.delete()
+                session['message'] = "HOHOHO slow down a bit!"
+                print(session['message'])
+            else:
+                try:
+                    job.perform()
+                    #remove job from que
+                    q.remove(job.get_id())
+                except:
+
+                    print('HOHOHOHO slow down a bit! you are breaking '
+                          'the database at this rate')
+                    q.remove(job.get_id())
+
+
+            #ti.add_to_todo(request.form['toevoegen'], user_id,
+            #               datetime.fromisoformat(
+            #                   request.form['toevoegen_date']))
 
             # verwijderen van een todo-item
         elif 'todo_delete' in request.form:
@@ -154,8 +196,29 @@ def submit_todo():
             ti.change_todo_text(request.form['todo_id'],
                                 request.form['todo_edit_text']
                                )
-    update_todo_list_socketio_agenda()
-    update_todo_list_socketio()
+
+    if len(q) == 0:
+        #update_todo_list_socketio_agenda()
+        job = q.enqueue(ti.get_todo_function, user_id)
+        if len(q) > 1:
+            print('There are {} jobs in the queue'.format(len(q)))
+            q.delete()
+            session['message'] = "HOHOHO slow down a bit!"
+            print(session['message'])
+        else:
+            try:
+                todolist = job.perform()
+
+                # remove job from que
+                q.remove(job.get_id())
+                update_todo_list_sockerio(todolist)
+            except:
+
+                print('HOHOHOHO slow down a bit! you are breaking '
+                      'the database at this rate')
+                q.remove(job.get_id())
+
+
 
     return 'succes: ' + str(request.form)
 
