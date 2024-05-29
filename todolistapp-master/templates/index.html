@@ -7,25 +7,53 @@
 {% endblock %}
 
 {% block content %}
-    <h1>To Do</h1><i class="fa-regular fa-plane"></i>
+    <br>
     <div class="add-todo">
         <form id="add-todo-form">
             <input type="text" id="toevoegen-todo" name="toevoegen" placeholder="pyweb maken">
             <div class="todo-toevoegen-right">
-                <div class="tags">
-                    <input type="text" id="toevoegen-todo-tags" name="toevoegen-tags" placeholder="tags">
-                    <input type="color" id="toevoegen-todo-tags-color" name="toevoegen-color" value="#ff0000">
-                </div>
-            <span class="datepicker-toggle">
-                <span class="fa-regular fa-calendar-days"></span>
-                <input type="datetime-local" id="toevoegen-todo-date" class="datepicker-input" name="toevoegen-date" value="{{ todo_time }}">
-            </span>
+                <div class="custom-select">
+                  <div class="select-selected">Select tag</div>
+                  <div class="select-items select-hide">
+                    <div style="background-color: whitesmoke;">
+                      <div class="tag" data-value="red" style="background-color:red;">
+                        <p class="tag"></p>
+                      </div>
+                    </div>
+                    <div style="background-color: whitesmoke;">
+                      <div class="tag" data-value="green" style="background-color:green;">
+                        <p class="tag"></p>
+                      </div>
+                    </div>
+                    <div style="background-color: whitesmoke;">
+                      <div class="tag" data-value="blue" style="background-color:blue;">
+                        <p class="tag"></p>
+                      </div>
+                    </div>
+                    <div style="background-color: whitesmoke;">
+                      <div class="tag" data-value="orange" style="background-color:orange;">
+                        <p class="tag"></p>
+                      </div>
+                    </div>
+                    <div style="background-color: whitesmoke;">
+                      <div class="tag" data-value="purple" style="background-color:purple;">
+                        <p class="tag"></p>
+                      </div>
+                    </div>
+                  </div>
+    </div>
+    <input type="hidden" id="toevoegen-todo-tags" name="toevoegen-tag" value="">
+                <span class="datepicker-toggle">
+                    <span class="fa-regular fa-calendar-days"></span>
+                    <input type="datetime-local" id="toevoegen-todo-date" class="datepicker-input" name="toevoegen-date" value="{{ todo_time }}">
+                </span>
 
-            <input id='toevoegen-todo-button' type="submit" value="OK">
+                <input id='toevoegen-todo-button' type="submit" value="OK">
                 </div>
         </form>
     </div>
-    <div id="todo-list">
+    <div class="row body-todo">
+    <div id="todo-list" class=" col-lg-8">
     <form id='todo-list-undone'>
     {% for todo in todolist %}
         <div id='todo-id-{{ todo.id }}' class="todo-item soft-border">
@@ -38,24 +66,47 @@
             {% if todo.todo_date_overdue %}
             <p class="todo-text text-red">{{ todo.todo_date }}</p>
             {% else %}
-            <p class="todo-text">{{ todo.todo_date }}</p>
+            <p class="todo-date-due">{{ todo.todo_date }}</p>
             {% endif %}
-            <div class="tag" style="background-color:{{ todo.todo_tags[1] }}"><p class="todo-text">{{ todo.todo_tags[0] }}</p></div>
-            <button type="submit" class="todo-delete fa fa-trash-o" name="todo-delete" value="{{ todo.id }}"></button>
+            <div id="at-the-end-todo" class="">
+                <div class="tags">
+                    <div class="tag" style="background-color:{{ todo.todo_tags[1] }}"><p class="tag"></p></div>
+                </div>
+
+                <button type="submit" class="todo-edit fa-solid fa-pen" name="todo-edit" value="{{ todo.id }}"></button>
+
+                <button type="submit" class="todo-delete fa fa-trash-o" name="todo-delete" value="{{ todo.id }}"></button>
+            </div>
         </div>
 
     {% endfor %}
     </form>
-    <form id='todo-list-done'>
-    {% for todo in todolistdone %}
-        <div class="todo-item soft-border">
-            <button type="submit" class="todo-done" name="todo-done-back" value="{{ loop.index }}"></button>
-            <s><p class="todo-text">{{ todo }}</p></s>
-            <button type="submit" class="todo-delete fa fa-trash-o" name="todo-done-delete" value="{{ loop.index }}"></button>
+
+    </div>
+    <div id="navbar2" class="col-xs-4">
+        <!--  inbox (this page) -->
+        <div class="d-flex justify-content-between todo-navbar-item selected">
+            <p class="todo-navbar-text">Inbox</p>
+            <p id="inbox-length" class="todo-navbar-text right">{{ todolist|length }}</p>
         </div>
 
-    {% endfor %}
-    </form>
+        <!-- today/tomorrow -->
+        <div class="d-flex justify-content-between todo-navbar-item">
+            <p class="todo-navbar-text">Today</p>
+            <p id="today-length" class="todo-navbar-text right">0</p>
+        </div>
+
+        <div class="d-flex justify-content-between todo-navbar-item">
+            <p class="todo-navbar-text">Tomorrow</p>
+            <p id="tomorrow-length" class="todo-navbar-text right">0</p>
+        </div>
+
+        <!-- upcoming -->
+        <div class="d-flex justify-content-between todo-navbar-item">
+            <p class="todo-navbar-text">Upcoming</p>
+            <p id="upcoming-length" class="todo-navbar-text right">0</p>
+        </div>
+    </div>
     </div>
 {% endblock %}
 
