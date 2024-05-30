@@ -1,11 +1,18 @@
+body {
+    z-index: 1;
+    overflow-x: hidden;
+}
+
 #todo-list {
             margin: 20px;
             padding: 20px;
-            border-style: solid;
-            border-color: gray;
             border-width: 2px;
             border-radius: 25px;
+    width: 80%;
+
         }
+
+
 
         .todo-text {
             display: inline;
@@ -19,21 +26,23 @@
         }
 
         .soft-border {
-            border-style: solid;
+            border-top-style: solid;
+            border-bottom-style: solid;
             border-color: lightgray;
             border-width: 2px;
         }
 
         .todo-item {
             padding: 6px;
-            margin: 6px;
+            margin: -2px;
+            align-items: center;
             justify-content: left;
         }
 
         .todo-edit {
-            position: absolute;
+
             margin-top: 3px;
-            right: 80px;
+
             background-color: transparent;
             border: none;
             color: grey;
@@ -44,8 +53,8 @@
         }
 
         .todo-delete {
-            position: absolute;
-            right: 60px;
+
+
             background-color: transparent;
             border: none;
             color: grey;
@@ -55,12 +64,19 @@
             color: red;
         }
 
+        #at-the-end-todo {
+            display: flex;
+            align-items: center;
+            float: right;
+            justify-content: end;
+        }
+
         .todo-done {
             border-radius: 500px;
             background-color: transparent;
             border-style: solid;
             border-color: gray;
-            border-width: 4px;
+            border-width: 2px;
             height: 20px;
             width: 20px;
         }
@@ -72,23 +88,30 @@
 
         .add-todo {
 
+            align-items: center;
             margin-left: 1%;
             padding-top: 10px;
             padding: 5px;
 
             padding-left: 20px;
             width: 95%;
-            height: 40px;
-            border-width: 3px;
-            border-style: solid;
+            height: 60px;
+            border-width: 2px;
+
+            border-bottom-style: solid;
             border-color: lightgray;
-            border-radius: 30px;
+
+
         }
 
         #toevoegen-todo {
-
             height: 35px;
             border: none;
+            width: 70%;
+        }
+
+        #toevoegen-todo:focus {
+            outline: None;
         }
 
         .text-red {
@@ -96,13 +119,13 @@
         }
 
         .datepicker-toggle {
-  display: inline-block;
+
   position: relative;
   width: 18px;
   height: 19px;
 }
 .datepicker-toggle-button {
-  position: absolute;
+
   left: 0;
   top: 0;
   width: 100%;
@@ -110,10 +133,16 @@
 }
 
 .todo-toevoegen-right {
-    display: inline;
+    display: flex;
+
+
+
     float: right;
-    margin-right: 10px;
-    margin-top: 5px;
+
+}
+
+#toevoegen-todo-tags-color {
+
 }
 
 
@@ -138,8 +167,91 @@
   cursor: pointer;
 }
 
+.tags {
+    padding-right: 10px;
+}
+
 .tag {
     border-radius: 25px;
     width: 40px;
-    display: inline;
+    height: 10px;
+
+}
+
+
+/* Style the custom select container */
+.custom-select {
+    margin-right: 10px;
+    right: 7.4%;
+    z-index: 2;
+  position: absolute;
+  font-family: Arial;
+}
+
+/* Style the select-selected element */
+.select-selected {
+  background-color: #e0e0e0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+/* Style the items (options), including the selected item */
+.select-items div, .select-selected {
+  color: black;
+    display: flex;
+  padding: 10px;
+  cursor: pointer;
+    z-index: 4;
+    justify-content: center;
+}
+
+/* Hide the items when the select box is closed */
+.select-hide {
+  display: none;
+}
+
+/* Style the items (options) when they are being displayed */
+.select-items div:hover, .same-as-selected {
+  background-color: #d1d1d1;
+}
+
+#toevoegen-todo-button {
+    background-color: transparent;
+    border: none;
+    color: grey;
+    height: 40px;
+}
+
+#navbar2 {
+    margin-top: 40px;
+    width: 15%;
+    z-index: 1;
+}
+
+.body-todo {
+
+    z-index: 1;
+    position: relative;
+    width: 100%;
+}
+
+.todo-navbar-item {
+            padding: 6px;
+            margin: 1px;
+            align-items: center;
+            justify-content: left;
+    border-radius: 4px;
+        }
+
+        .todo-navbar-item:hover {
+            background-color: #f0f0f0;
+        }
+
+.todo-navbar-item.selected {
+    background-color: rgba(255, 204, 204, 0.84);
+}
+
+.todo-navbar-text {
+    margin-bottom: 0;
 }
